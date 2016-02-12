@@ -33,8 +33,8 @@ Show any code that is needed to
 2. Process/transform the data (if necessary) into a format suitable for your analysis
 
 
-```{r ,echo=TRUE}
 
+```r
 setwd("C:/SD Storage/Dropbox/work/Coursera/Data Science/Reproducible Research")
 
 
@@ -45,7 +45,6 @@ activity <- read.csv("activity.csv", as.is = TRUE)
 
 # Clear the data of the null cases
 activity_not_NA <- activity[complete.cases(activity), ]
-
 ```
 
 
@@ -59,21 +58,32 @@ For this part of the assignment, you can ignore the missing values in the datase
 
 2. Calculate and report the mean and median total number of steps taken per day
 
-```{r ,echo=TRUE}
 
+```r
 # how many steps per day
 steps_per_day <- aggregate(steps ~ date, activity_not_NA, sum)
 
 # Create a basic graph for showing the steps per day
 hist(steps_per_day$steps, main = "Total number of steps per day", xlab = "Total Steps per day")
+```
 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
+
+```r
 # Calculate the mean and median 
 round(mean(steps_per_day$steps))
+```
 
+```
+## [1] 10766
+```
 
+```r
 median(steps_per_day$steps)
+```
 
-
+```
+## [1] 10765
 ```
 
 
@@ -84,8 +94,8 @@ median(steps_per_day$steps)
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 
-```{r,echo=TRUE}
 
+```r
 # Avarage steps per day 
 avg_steps_per_interval <- aggregate(steps ~ interval, activity_not_NA, mean)
 
@@ -95,8 +105,10 @@ interval_idx <- which.max(avg_steps_per_interval$steps)
 
 # which contains the maximum number of steps
 print (paste("The highest avg steps is in Interval ", avg_steps_per_interval[interval_idx, ]$interval))
+```
 
-
+```
+## [1] "The highest avg steps is in Interval  835"
 ```
 
 
@@ -114,13 +126,18 @@ Note that there are a number of days/intervals where there are missing values (c
 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 
-```{r,echo=TRUE}
 
+```r
 # Calculate the number of rows with missing values
 total_rows_na <- activity[!complete.cases(activity), ]
 nrow(total_rows_na)
+```
 
+```
+## [1] 2304
+```
 
+```r
 # Devise a strategy for filling in all of the missing values in the dataset
 
 for (i in 1:nrow(activity)) {
@@ -136,15 +153,26 @@ steps_per_day_not_na <- aggregate(steps ~ date, activity, sum)
 
 # Draw a histogram 
 hist(steps_per_day_not_na$steps, main = "Histogram of total number of steps per day (NA)", xlab = "Steps per day")
+```
 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
+```r
 # Compute the mean 
 round(mean(steps_per_day_not_na$steps))
+```
 
+```
+## [1] 10766
+```
+
+```r
 # Compute the median
 median(steps_per_day_not_na$steps)
+```
 
-
+```
+## [1] 10766.19
 ```
 
 
@@ -158,8 +186,8 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was created using simulated data:
 
 
-```{r,echo=TRUE}
 
+```r
 check_is_week_day <- function(date_val) {
     wd <- weekdays(as.Date(date_val, '%Y-%m-%d'))
     if  ((wd == 'Saturday' || wd == 'Sunday')) {
@@ -189,10 +217,9 @@ plt <- ggplot(steps_per_day_type, aes(interval, steps)) +
 
 
 print(plt)
-
-
-
 ```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
 
 
